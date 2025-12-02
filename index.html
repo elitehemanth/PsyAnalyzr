@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Hemanth Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      scroll-behavior: smooth;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+    nav a:hover { color: #ffd700; }
+    nav a.active {
+      color: #ffd700;
+      border-bottom: 2px solid #ffd700;
+    }
+
+    header {
+      text-align: center;
+      padding: 120px 20px 60px;
+    }
+    header h1 { font-size: 3rem; margin-bottom: 10px; }
+    .typing {
+      border-right: 2px solid #ffd700;
+      padding-right: 5px;
+      animation: blink 0.7s infinite;
+      font-weight: bold;
+      color: #ffd700;
+    }
+    @keyframes blink {
+      0% { border-color: transparent; }
+      50% { border-color: #ffd700; }
+      100% { border-color: transparent; }
+    }
+
+    /* Cube */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      margin-top: 40px;
+    }
+    .box-card {
+      width: 200px; height: 200px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotate3d 12s infinite linear;
+    }
+    .face {
+      position: absolute;
+      width: 100%; height: 100%;
+      display: flex; justify-content: center; align-items: center;
+      font-size: 1.2rem; font-weight: bold;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #2a2a2a, #383838);
+      border: 2px solid #646cff;
+      color: #ffd700;
+    }
+    .front  { transform: translateZ(100px); border-color: #646cff; }
+    .back   { transform: translateZ(-100px) rotateY(180deg); border-color: #00bcd4; }
+    .right  { transform: translateX(100px) rotateY(90deg); border-color: #4caf50; }
+    .left   { transform: translateX(-100px) rotateY(-90deg); border-color: #ff4081; }
+    .top    { transform: translateY(-100px) rotateX(90deg); border-color: #ffc107; }
+    .bottom { transform: translateY(100px) rotateX(-90deg); border-color: #9c27b0; }
+    @keyframes rotate3d {
+      0% { transform: rotateX(0) rotateY(0); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+
+    section {
+      padding: 80px 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h2 { font-size: 2rem; margin-bottom: 20px; }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 400px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Wider About & Projects Cards */
+    #about .card, #projects .card { max-width: 700px; }
+
+    /* Skills Radial Charts */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+    .radial-chart {
+      width: 120px; height: 120px;
+      transform: rotate(-1deg);
+    }
+    .radial-chart circle {
+      fill: none; stroke-width: 10; stroke-linecap: round;
+    }
+    .radial-chart .bg { stroke: rgba(255,255,255,0.2); }
+    .radial-chart .progress {
+      stroke: #ffd700;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      transition: stroke-dashoffset 1.5s ease;
+    }
+    .skill { text-align: center; }
+    .skill text.percent {
+      fill: #ffd700;
+      font-weight: bold;
+      font-size: 14px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    /* Projects */
+    #projects .projects-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    #projects a.card {
+      flex: 1 1 300px;
+      max-width: 350px;
+      text-decoration: none;
+      color: white;
+    }
+    #projects a.card:hover { background: rgba(255,255,255,0.2); }
+
+    /* Journey Timeline */
+    .timeline {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .event {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+    }
+    .event h3 { color: #ffd700; }
+    .event::before {
+      content: "•";
+      position: absolute;
+      left: -15px;
+      top: 10px;
+      color: #ffd700;
+      font-size: 1.5rem;
+    }
+
+    /* Tech Stack Showcase */
+    #stack { padding: 80px 20px; text-align: center; }
+    .stack-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .stack-item {
+      flex: 1 1 120px;
+      max-width: 150px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    .stack-item.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .stack-item:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .stack-item .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+    .stack-item p { font-weight: 600; color: white; }
+
+    /* Footer */
+    footer {
+      text-align:center;
+      padding:30px;
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(10px);
+    }
+    footer a { color:#ffd700; text-decoration:none; font-weight:bold; }
+
+  </style>
+</head>
+<body id="top">
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#journey">Journey</a>
+    <a href="#stack">Tech Stack</a>
+        <a href="#contact">Contact</a>
+  </nav>
+
+  <header>
+    <h1>Welcome to Hemanth Studio</h1>
+    <p>I am <span class="typing"></span></p>
+    <div class="container">
+      <div class="box-card">
+        <div class="face front">Code</div>
+        <div class="face back">Games</div>
+        <div class="face right">Security</div>
+        <div class="face left">Automation</div>
+        <div class="face top">Linux</div>
+        <div class="face bottom">Web</div>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <div class="card">
+      <h3>Hi, I'm Hemanth Kumar</h3>
+      <p>
+        I'm a persistent, detail‑oriented developer specializing in interactive web applications (HTML, CSS, JS) 
+        and backend integration with Python (FastAPI). Passionate about workflow automation, UI clarity, and 
+        making complex systems accessible.
+      </p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>My Skills</h2>
+    <div class="skills-container">
+      <div class="skill">
+        <svg class="radial-chart" viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="45"></circle>
+          <circle class="progress" cx="50" cy="50" r="45" data-percent="70"></circle>
+          <text x="50" y="55" class="percent">90%</text>
+        </svg>
+        <div class="label">Game Designing (Unreal Engine)</div>
+      </div>
+      <div class="skill">
+        <svg class="radial-chart" viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="45"></circle>
+          <circle class="progress" cx="50" cy="50" r="45" data-percent="90"></circle>
+          <text x="50" y="55" class="percent">90%</text>
+        </svg>
+        <div class="label">Coding (Python, Java, PHP, C)</div>
+      </div>
+      <div class="skill">
+        <svg class="radial-chart" viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="45"></circle>
+          <circle class="progress" cx="50" cy="50" r="45" data-percent="80"></circle>
+          <text x="50" y="55" class="percent">80%</text>
+        </svg>
+        <div class="label">Linux (Debian, Uduntu, Arch, Mint, Kali, Red Hat)</div>
+      </div>
+      <div class="skill">
+        <svg class="radial-chart" viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="45"></circle>
+          <circle class="progress" cx="50" cy="50" r="45" data-percent="60"></circle>
+          <text x="50" y="55" class="percent">60%</text>
+        </svg>
+        <div class="label">Ethical Hacking (Wireshark, Ransomware, Phishing, RAT basics)</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-container">
+      <a href="https://github.com/elitehemanth/Web-Scraping" target="_blank" class="card">
+        <h3>Web Scraping Tool</h3>
+        <p>A lightweight tool that quickly extracts useful data from websites and saves it in clean, structured formats.
+           Perfect for fast automation and analysis.</p>
+        <p style="margin-top:10px; font-size:0.9rem; color:#ffd700;">View this project on GitHub</p>
+      </a>
+      <a href="https://github.com/elitehemanth/Blue-Print-Editor" target="_blank" class="card">
+        <h3>UI Blueprint Editor</h3>
+        <p>An interactive editor built with HTML, CSS, and JavaScript for designing workflows.
+        </p>
+        <p style="margin-top:10px; font-size:0.9rem; color:#ffd700;">Try it live or check GitHub</p>
+      </a>
+      <a href="https://github.com/elitehemanth/face-recognition-attendance-system" target="_blank" class="card">
+        <h3>Face-Recognition</h3>
+        <p>Face recognition identifies and verifies people by analyzing their facial features from images. 
+          It’s used for authentication, security, and smart automation.</p>
+        <p style="margin-top:10px; font-size:0.9rem; color:#ffd700;">View this project on GitHub</p>
+      </a>
+    </div>
+  </section>
+
+  <section id="journey">
+    <h2>My Journey</h2>
+    <div class="timeline">
+      <div class="event">
+        <h3>2023 – First Lines of Code</h3>
+        <p>Started experimenting with Python and building small scripts.</p>
+      </div>
+      <div class="event">
+        <h3>2023 – Ethical Hacking</h3>
+        <p>Designed FastAPI-powered automation tools to simulate security checks, speed up vulnerability analysis.</p>
+      </div>
+      <div class="event">
+        <h3>2024 – Game Design</h3>
+        <p>Dove into Unreal Engine and created my first playable prototype exploring gameplay mechanics, level design, and real-time rendering..</p>
+      </div>
+      <div class="event">
+        <h3>2025 – Workflow Automation</h3>
+        <p>Built FastAPI tools to automate repetitive tasks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <h2>Tech Stack Showcase</h2>
+    <div class="stack-container">
+      <div class="stack-item"><span class="icon">🐍</span><p>Python</p></div>
+      <div class="stack-item"><span class="icon">⚡</span><p>FastAPI</p></div>
+      <div class="stack-item"><span class="icon">🎨</span><p>CSS3</p></div>
+      <div class="stack-item"><span class="icon">🕹️</span><p>Unreal Engine</p></div>
+      <div class="stack-item"><span class="icon">🐧</span><p>Linux</p></div>
+      <div class="stack-item"><span class="icon">🌐</span><p>JavaScript</p></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="card">
+      <p>GitHub: <a href="https://github.com/elitehemanth" target="_blank" style="color:#ffd700;">github.com/elitehemanth</a></p>
+      <p>LinkedIn: <a href="www.linkedin.com/in/k-hemanth-kumar25" target="_blank" style="color:#ffd700;">linkedin.com/in/Hemanth-kumar</a></p>
+      <p style="margin-top:15px;">
+        I’m always open to collaborations, freelance opportunities, or just a friendly chat about technology. 
+        Feel free to reach out if you’d like to work together or discuss ideas.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p>🚀 Thanks for visiting my portfolio!</p>
+    <p>All projects are open‑source and available on 
+      <a href="https://github.com/elitehemanth" target="_blank">GitHub</a>.
+    </p>
+    <p style="margin-top:10px;">🌟 Let’s build something amazing together!</p>
+    <a href="#top">⬆ Back to Top</a>
+  </footer>
+
+  <script>
+    // Typing Animation
+    const phrases = ["a game designer ","a coder ","a hacker ","a automate expert "];
+    let i = 0, j = 0, isDeleting = false;
+    const typingElement = document.querySelector(".typing");
+
+    function typingLoop() {
+      typingElement.textContent = phrases[i].substring(0, j);
+      if (!isDeleting && j < phrases[i].length) j++;
+      else if (isDeleting && j > 0) j--;
+      if (j === phrases[i].length && !isDeleting) { isDeleting = true; setTimeout(typingLoop, 1000); return; }
+      if (isDeleting && j === 0) { isDeleting = false; i++; if (i === phrases.length) i = 0; }
+      setTimeout(typingLoop, isDeleting ? 50 : 100);
+    }
+    typingLoop();
+
+    // Radial Chart Animation + Labels
+    document.querySelectorAll('.progress').forEach(circle => {
+      const radius = circle.r.baseVal.value;
+      const circumference = 2 * Math.PI * radius;
+      const percent = circle.dataset.percent;
+      circle.style.strokeDasharray = circumference;
+      circle.style.strokeDashoffset = circumference;
+
+      // Update the text inside the circle
+      const text = circle.parentNode.querySelector("text.percent");
+      if (text) text.textContent = percent + "%";
+
+      setTimeout(() => {
+        const offset = circumference - (percent / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+      }, 500);
+    });
+
+    // Smooth Section Transitions
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(sec => observer.observe(sec));
+
+    // Scrollspy Active Nav Highlight
+    const navLinks = document.querySelectorAll("nav a");
+    const spyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove("active"));
+          const id = entry.target.getAttribute("id");
+          document.querySelector(`nav a[href="#${id}"]`).classList.add("active");
+        }
+      });
+    }, { threshold: 0.6 });
+    sections.forEach(sec => spyObserver.observe(sec));
+
+    // Animate Tech Stack Items on Scroll
+    const stackItems = document.querySelectorAll(".stack-item");
+    const stackObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+    stackItems.forEach(item => stackObserver.observe(item));
+  </script>
+</body>
+</html>
